@@ -158,6 +158,36 @@ The Docker image uses a multi-stage build with Alpine Linux for a small footprin
 
 ## Configuration
 
+### Quickest: the install script
+
+`scripts/install.sh` registers the server with every supported agent it finds on your machine
+(Claude Code, Claude Desktop, OpenAI Codex CLI, Gemini CLI, Goose, OpenCode). It builds the
+server if needed, uses each agent's own CLI when one exists (`claude mcp add`, `codex mcp add`,
+`gemini mcp add`) and otherwise edits the agent's config file in place, keeping everything else
+in the file and leaving a `.bak` copy.
+
+```bash
+npm run install:agents                         # every agent detected on this machine
+scripts/install.sh --agents all --dry-run      # preview the change for every agent
+scripts/install.sh --agents claude,goose       # just Claude Code and Goose
+scripts/install.sh --scope project             # project-level config (claude, codex, gemini, opencode)
+scripts/install.sh --username you --password … # store GBIF credentials for download requests
+scripts/install.sh --uninstall                 # remove the registration everywhere
+```
+
+| Agent | What the script does |
+|---|---|
+| `claude` (Claude Code) | `claude mcp add --scope user gbif -- node build/index.js` |
+| `claude-desktop` | adds `mcpServers.gbif` to `claude_desktop_config.json` (macOS / Linux paths) |
+| `codex` (OpenAI Codex CLI) | `codex mcp add gbif -- node build/index.js`, or a `[mcp_servers.gbif]` table in `~/.codex/config.toml` |
+| `gemini` (Gemini CLI) | `gemini mcp add --scope user gbif node build/index.js`, or `mcpServers.gbif` in `~/.gemini/settings.json` |
+| `goose` | adds a `gbif` stdio extension to `~/.config/goose/config.yaml` |
+| `opencode` | adds `mcp.servers.gbif` (v2) or `mcp.gbif` (v1) to `~/.config/opencode/opencode.json` |
+
+The script needs bash and Node.js 20+. On Windows run it from WSL or Git Bash, or follow the
+manual steps below (Claude Desktop on Windows: `%APPDATA%\Claude\claude_desktop_config.json`).
+Restart desktop apps (Claude Desktop, Goose Desktop) after installing.
+
 ### Option 1: Claude Desktop App
 
 Add the server to your Claude Desktop configuration file:

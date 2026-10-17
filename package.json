@@ -19,7 +19,8 @@
     "format": "prettier --write 'src/**/*.ts'",
     "clean": "rimraf build",
     "typecheck": "tsc --noEmit",
-    "test:integration:protocol": "vitest tests/integration/mcp/stdio-protocol.test.ts --run"
+    "test:integration:protocol": "vitest tests/integration/mcp/stdio-protocol.test.ts --run",
+    "install:agents": "bash scripts/install.sh"
   },
   "keywords": [
     "mcp",

@@ -25,6 +25,7 @@ npm run lint         # Lint TypeScript files in src/
 npm run format       # Format code with Prettier
 npm run clean        # Remove build directory
 npm run typecheck    # Type-check without emitting files
+npm run install:agents  # Register the server with Claude Code/Desktop, Codex, Gemini, Goose, OpenCode (scripts/install.sh)
 ```
 
 Run a single test file: `npm test -- tests/unit/species.service.test.ts`
