@@ -518,10 +518,18 @@ class GBIFMCPServer {
         },
       });
 
-      // Log server statistics periodically (every 5 minutes)
+      // Log server statistics periodically (every 5 minutes). The timer is unref'd so it
+      // never keeps the process alive once the client has closed the stdio connection.
       if (config.features.enableMetrics) {
-        setInterval(() => this.logStatistics(), 5 * 60 * 1000);
+        setInterval(() => this.logStatistics(), 5 * 60 * 1000).unref();
       }
+
+      // MCP hosts signal shutdown by closing the server's stdin. Exit promptly (and log
+      // final statistics) instead of lingering as an orphaned process.
+      process.stdin.once('end', () => {
+        logger.info('stdin closed by client, shutting down');
+        void this.shutdown();
+      });
     } catch (error) {
       logger.error('Failed to start GBIF MCP Server', { error });
       throw error;
@@ -644,14 +652,14 @@ async function main() {
   try {
     await server.start();
 
-    // Health check logging (if metrics enabled)
+    // Health check logging (if metrics enabled); unref'd so it cannot keep the process alive
     if (config.features.enableMetrics) {
       setInterval(() => {
         const health = server.getHealth();
         if (health.status !== 'healthy') {
           logger.warn('Server health degraded', { health });
         }
-      }, 60000); // Check every minute
+      }, 60000).unref(); // Check every minute
     }
   } catch (error) {
     logger.error('Fatal error during server startup', {

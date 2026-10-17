@@ -19,7 +19,6 @@ export const SERVER_ENTRY = resolve(PROJECT_ROOT, 'src/index.ts');
 export const SERVER_ENV: Record<string, string> = {
   ...(process.env as Record<string, string>),
   LOG_LEVEL: 'error',
-  ENABLE_METRICS: 'false',
 };
 
 /** The reserved 2026-07-28 per-request `_meta` envelope a client must send. */
@@ -35,7 +34,7 @@ export type JsonRpcMessage = Record<string, any>;
  * Raw JSON-RPC stdio session: write newline-delimited messages, collect replies.
  */
 export class RawStdioSession {
-  private readonly proc: ChildProcessWithoutNullStreams;
+  readonly proc: ChildProcessWithoutNullStreams;
   private buffer = '';
   private readonly messages: JsonRpcMessage[] = [];
   private readonly waiters: Array<() => void> = [];
@@ -110,19 +109,25 @@ export class RawStdioSession {
     return !this.messages.some(predicate);
   }
 
+  /** Wait for the process to exit on its own; resolves to the exit code, or null on timeout. */
+  async waitForExit(timeoutMs = 3000): Promise<number | null> {
+    if (this.exitCode !== null) return this.exitCode;
+    return new Promise<number | null>(resolve => {
+      const timer = setTimeout(() => resolve(null), timeoutMs);
+      this.proc.once('exit', code => {
+        clearTimeout(timer);
+        resolve(code);
+      });
+    });
+  }
+
+  /** Close stdin (how MCP hosts signal shutdown); kill the process only if it does not exit by itself. */
   async close(): Promise<void> {
     if (this.exitCode !== null) return;
     this.proc.stdin.end();
-    await new Promise<void>(resolve => {
-      const timer = setTimeout(() => {
-        this.proc.kill('SIGKILL');
-        resolve();
-      }, 3000);
-      this.proc.on('exit', () => {
-        clearTimeout(timer);
-        resolve();
-      });
-    });
+    if ((await this.waitForExit(3000)) === null) {
+      this.proc.kill('SIGKILL');
+    }
   }
 }
 

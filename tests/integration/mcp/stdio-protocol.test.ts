@@ -153,6 +153,27 @@ describe('2026-07-28 era (stateless envelope)', () => {
   });
 });
 
+describe('process lifecycle', () => {
+  it('exits on its own when the client closes stdin (default settings, metrics enabled)', async () => {
+    const s = open();
+    await s.request({ jsonrpc: '2.0', id: 1, method: 'tools/list', params: { _meta: MODERN_META } });
+    s.proc.stdin.end();
+    const t0 = Date.now();
+    const code = await s.waitForExit(5000);
+    expect(code, `server still running ${Date.now() - t0}ms after stdin EOF`).toBe(0);
+  });
+
+  it('exits on its own after a legacy session ends', async () => {
+    const s = open();
+    await s.request({
+      jsonrpc: '2.0', id: 1, method: 'initialize',
+      params: { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'legacy', version: '0' } },
+    });
+    s.proc.stdin.end();
+    expect(await s.waitForExit(5000)).toBe(0);
+  });
+});
+
 describe('2025-era clients (legacy initialize handshake)', () => {
   it('still completes the initialize handshake and lists tools', async () => {
     const s = open();
