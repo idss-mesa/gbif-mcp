@@ -1,0 +1,135 @@
+# Zensical site configuration (https://zensical.org). Replaces mkdocs.yml.
+# Build locally:  pip install zensical && zensical serve
+# Deployed by .github/workflows/docs.yml to https://idss-mesa.github.io/gbif-mcp/
+
+[project]
+site_name = "GBIF MCP Server"
+site_url = "https://idss-mesa.github.io/gbif-mcp/"
+site_description = "Model Context Protocol server providing comprehensive access to GBIF biodiversity data"
+site_author = "IDSS MESA"
+copyright = "Copyright &copy; 2024-2026 GBIF MCP Server Contributors &middot; CC BY 4.0"
+
+repo_url = "https://github.com/idss-mesa/gbif-mcp"
+repo_name = "idss-mesa/gbif-mcp"
+edit_uri = "edit/main/docs/"
+
+nav = [
+  { "Home" = [
+    { "Overview" = "index.md" },
+    { "Features" = "getting-started/features.md" },
+  ] },
+  { "Getting Started" = [
+    { "Installation" = "getting-started/installation.md" },
+    { "Quick Start" = "getting-started/quick-start.md" },
+    { "Configuration" = "getting-started/configuration.md" },
+  ] },
+  { "User Guide" = [
+    { "Overview" = "user-guide/overview.md" },
+  ] },
+  { "API Reference" = [
+    { "All Tools" = "api-reference/tools.md" },
+  ] },
+  { "Examples" = [
+    { "Basic Queries" = "examples/basic-queries.md" },
+  ] },
+]
+
+extra_css = ["stylesheets/extra.css"]
+
+[project.theme]
+language = "en"
+features = [
+  "announce.dismiss",
+  "content.action.edit",
+  "content.action.view",
+  "content.code.annotate",
+  "content.code.copy",
+  "content.code.select",
+  "content.footnote.tooltips",
+  "content.tabs.link",
+  "content.tooltips",
+  "navigation.footer",
+  "navigation.indexes",
+  "navigation.instant",
+  "navigation.instant.prefetch",
+  "navigation.instant.progress",
+  "navigation.path",
+  "navigation.sections",
+  "navigation.tabs",
+  "navigation.tabs.sticky",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+  "search.suggest",
+  "toc.follow",
+]
+
+[project.theme.icon]
+logo = "lucide/leaf"
+repo = "fontawesome/brands/github"
+
+[project.theme.font]
+text = "Inter"
+code = "JetBrains Mono"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "green"
+accent = "light green"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "green"
+accent = "light green"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/idss-mesa/gbif-mcp"
+
+[[project.extra.social]]
+icon = "fontawesome/solid/globe"
+link = "https://www.gbif.org/"
+
+[project.markdown_extensions]
+abbr = {}
+admonition = {}
+attr_list = {}
+def_list = {}
+footnotes = {}
+md_in_html = {}
+tables = {}
+toc.permalink = true
+toc.toc_depth = 3
+pymdownx.arithmatex.generic = true
+pymdownx.betterem = {}
+pymdownx.caret = {}
+pymdownx.details = {}
+pymdownx.emoji.emoji_generator = "zensical.extensions.emoji.to_svg"
+pymdownx.emoji.emoji_index = "zensical.extensions.emoji.twemoji"
+pymdownx.highlight.anchor_linenums = true
+pymdownx.highlight.line_spans = "__span"
+pymdownx.highlight.pygments_lang_class = true
+pymdownx.inlinehilite = {}
+pymdownx.keys = {}
+pymdownx.magiclink = {}
+pymdownx.mark = {}
+pymdownx.smartsymbols = {}
+pymdownx.snippets = {}
+pymdownx.superfences.custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+]
+pymdownx.tabbed.alternate_style = true
+pymdownx.tabbed.combine_header_slug = true
+pymdownx.tasklist.custom_checkbox = true
+pymdownx.tilde = {}

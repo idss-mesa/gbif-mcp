@@ -1,3 +1,1 @@
-zensical>=0.0.20
-mkdocs-material>=9.5.0
-pymdown-extensions>=10.7.0
+zensical>=0.0.70

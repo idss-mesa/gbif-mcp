@@ -69,7 +69,7 @@ docs/
 ### Create New Page
 
 1. Create markdown file in appropriate directory
-2. Add to `mkdocs.yml` nav section
+2. Add to the `nav` list in `zensical.toml`
 3. Test locally with `zensical serve`
 4. Commit and push (auto-deploys)
 
@@ -83,7 +83,7 @@ docs/
 
 ## Configuration
 
-Main configuration in `mkdocs.yml` at project root:
+Main configuration in `zensical.toml` at project root (Zensical, the successor to Material for MkDocs):
 - Site metadata
 - Theme settings (Material)
 - Navigation structure
@@ -110,6 +110,5 @@ When adding documentation:
 
 ## Support
 
-- [MkDocs Documentation](https://www.mkdocs.org/)
-- [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)
+- [Zensical Documentation](https://zensical.org/docs/)
 - [Zensical Documentation](https://zensical.org/)

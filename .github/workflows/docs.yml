@@ -1,4 +1,7 @@
-name: Build and Deploy Documentation
+# Builds the Zensical site from zensical.toml and publishes it to GitHub Pages.
+# Based on the workflow that `zensical new` generates (https://zensical.org/docs/publish-your-site/).
+# GitHub Pages for the repository must be set to "GitHub Actions" as its source.
+name: Documentation
 
 on:
   push:
@@ -6,7 +9,7 @@ on:
       - main
     paths:
       - 'docs/**'
-      - 'mkdocs.yml'
+      - 'zensical.toml'
       - '.github/workflows/docs.yml'
   workflow_dispatch:
 
@@ -20,39 +23,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-
-      - name: Install dependencies
-        run: pip install -r docs/requirements.txt
-
-      - name: Build documentation with Zensical
-        run: zensical build --clean --strict
-
-      - name: Upload site
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
   deploy:
-    needs: build
-    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
+      - uses: actions/configure-pages@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.x
+      - run: pip install -r docs/requirements.txt
+      - run: zensical build --clean --strict
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+      - uses: actions/deploy-pages@v5
         id: deployment
-        uses: actions/deploy-pages@v4
-
-      - name: Summary
-        run: echo "📚 Documentation deployed to ${{ steps.deployment.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"
