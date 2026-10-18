@@ -15,9 +15,9 @@ The GBIF MCP Server provides **57 tools** across **7 major categories**, each se
 | [Registry](../api-reference/tools.md#registry-tools-18) | 18 | 57% | Datasets, institutions, metadata |
 | [Maps](../api-reference/tools.md#maps-tools-4) | 4 | 67% | Visualization, tile generation |
 | [Statistics](../api-reference/tools.md#occurrence-tools-14) | 7 | - | Counts, trends, analysis |
-| [Literature](../api-reference/tools.md#literature) | 2 | 50% | Research impact |
-| [Vocabularies](../api-reference/tools.md#vocabularies) | 3 | 60% | Standards, valid values |
-| [Validator](../api-reference/tools.md#validator) | 3 | 30% | Quality assurance |
+| [Literature](../api-reference/tools.md#literature-tools-2) | 2 | 50% | Research impact |
+| [Vocabularies](../api-reference/tools.md#vocabularies-tools-3) | 3 | 60% | Standards, valid values |
+| [Validator](../api-reference/tools.md#validator-tools-3) | 3 | 30% | Quality assurance |
 
 ## Quick Reference
 
