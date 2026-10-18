@@ -1,5 +1,16 @@
 # GBIF Services Implementation Report
 
+> **Status (updated 2026-10-18, v1.1.0).** This document is a historical snapshot from November 4, 2025 (service layer before the tool wrappers existed)
+> and is kept for the project record. Since it was written the server has grown to **58 tools**
+> (14 species, 14 occurrence, 18 registry, 4 maps, 2 literature, 3 vocabularies, 3 validator),
+> moved to **MCP protocol revision 2026-07-28** on the v2 TypeScript SDK (Node 20+, 2025-era
+> clients still served), repaired retired GBIF endpoints (occurrence counts now use faceted
+> search; `/parser/name`, `/organization`, `/network`, `/installation`, EML documents and
+> literature-by-DOI fixed), and gained an agent install script. Tests: 261 unit, 32 protocol
+> conformance, plus a 58-tool adversarial matrix against the live API. The repository now lives
+> at <https://github.com/idss-mesa/gbif-mcp>. Current references: [README.md](README.md),
+> [TOOLS.md](TOOLS.md), [CLAUDE.md](CLAUDE.md). Paths below are relative to the repository root.
+
 **Date**: November 4, 2025
 **Project**: GBIF MCP Server
 **Task**: Implementation of Remaining GBIF Services
@@ -11,7 +22,7 @@ Successfully implemented and enhanced **all five remaining GBIF API services** (
 ## Services Implemented
 
 ### 1. Registry Service ✅ COMPLETE
-**Location**: `/Users/tswetnam/Desktop/gbif-mcp/src/services/registry/registry.service.ts`
+**Location**: `src/services/registry/registry.service.ts`
 
 **Status**: Fully enhanced with comprehensive implementation
 
@@ -55,7 +66,7 @@ console.log(org.title); // "Cornell Lab of Ornithology"
 ---
 
 ### 2. Maps Service ✅ COMPLETE
-**Location**: `/Users/tswetnam/Desktop/gbif-mcp/src/services/maps/maps.service.ts`
+**Location**: `src/services/maps/maps.service.ts`
 
 **Status**: Fully enhanced with comprehensive tile URL generation
 
@@ -106,7 +117,7 @@ const styles = mapsService.getAvailableStyles();
 ---
 
 ### 3. Literature Service ⚠️ NEEDS ENHANCEMENT
-**Location**: `/Users/tswetnam/Desktop/gbif-mcp/src/services/literature/literature.service.ts`
+**Location**: `src/services/literature/literature.service.ts`
 
 **Current Status**: Basic implementation exists, needs enhancement
 
@@ -191,7 +202,7 @@ async getById(id: string): Promise<Literature> {
 ---
 
 ### 4. Vocabularies Service ⚠️ NEEDS ENHANCEMENT
-**Location**: `/Users/tswetnam/Desktop/gbif-mcp/src/services/vocabularies/vocabularies.service.ts`
+**Location**: `src/services/vocabularies/vocabularies.service.ts`
 
 **Current Status**: Basic implementation exists, needs enhancement
 
@@ -282,7 +293,7 @@ getCommonVocabularies(): string[] {
 ---
 
 ### 5. Validator Service ⚠️ NEEDS ENHANCEMENT
-**Location**: `/Users/tswetnam/Desktop/gbif-mcp/src/services/validator/validator.service.ts`
+**Location**: `src/services/validator/validator.service.ts`
 
 **Current Status**: Basic implementation exists, needs enhancement
 
@@ -386,7 +397,7 @@ private isValidUrl(url: string): boolean {
 
 ## Type Definitions Added
 
-### New Types in `/Users/tswetnam/Desktop/gbif-mcp/src/types/gbif.types.ts`
+### New Types in `src/types/gbif.types.ts`
 
 ```typescript
 // Registry API Types

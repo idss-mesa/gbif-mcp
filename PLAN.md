@@ -1,12 +1,23 @@
 # GBIF MCP Server Implementation Plan
 
+> **Status (updated 2026-10-18, v1.1.0).** This document is a historical snapshot from November 2025 (the original build plan)
+> and is kept for the project record. Since it was written the server has grown to **58 tools**
+> (14 species, 14 occurrence, 18 registry, 4 maps, 2 literature, 3 vocabularies, 3 validator),
+> moved to **MCP protocol revision 2026-07-28** on the v2 TypeScript SDK (Node 20+, 2025-era
+> clients still served), repaired retired GBIF endpoints (occurrence counts now use faceted
+> search; `/parser/name`, `/organization`, `/network`, `/installation`, EML documents and
+> literature-by-DOI fixed), and gained an agent install script. Tests: 261 unit, 32 protocol
+> conformance, plus a 58-tool adversarial matrix against the live API. The repository now lives
+> at <https://github.com/idss-mesa/gbif-mcp>. Current references: [README.md](README.md),
+> [TOOLS.md](TOOLS.md), [CLAUDE.md](CLAUDE.md). The plan's SDK, Node and tool-count assumptions are superseded by the notes in this banner; the phase structure was followed.
+
 ## Overview
 
 This document outlines the complete implementation plan for building a Model Context Protocol (MCP) server that provides access to the Global Biodiversity Information Facility (GBIF) API. The plan is structured in phases to ensure systematic development and testing.
 
 ## Prerequisites
 
-- Node.js v18+ and npm
+- Node.js v20+ and npm (v18 was the original target; the v2 MCP SDK needs 20)
 - TypeScript knowledge
 - Understanding of MCP protocol
 - GBIF API documentation (https://techdocs.gbif.org/en/openapi/)
@@ -30,7 +41,7 @@ mkdir -p docs
 ```json
 {
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@modelcontextprotocol/server": "^2.3.1",
     "axios": "^1.6.0",
     "p-queue": "^8.0.0",
     "lru-cache": "^10.0.0",
@@ -113,7 +124,8 @@ Implement abstract base class with:
 **File: `src/index.ts`**
 
 ```typescript
-import { Server, StdioServerTransport } from '@modelcontextprotocol/sdk/server';
+import { McpServer } from '@modelcontextprotocol/server';
+import { serveStdio } from '@modelcontextprotocol/server/stdio';
 
 // Initialize server with:
 // - Tool registration

@@ -16,7 +16,7 @@ other MCP client that can launch a stdio server.
 ## Quick start
 
 ```bash
-git clone https://github.com/tyson-swetnam/gbif-mcp.git
+git clone https://github.com/idss-mesa/gbif-mcp.git
 cd gbif-mcp
 npm install
 npm run build

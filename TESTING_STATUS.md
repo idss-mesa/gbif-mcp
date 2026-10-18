@@ -1,5 +1,16 @@
 # GBIF MCP Server - Testing Status
 
+> **Status (updated 2026-10-18, v1.1.0).** This document is a historical snapshot from February 2026 (Phase 1 of the testing plan)
+> and is kept for the project record. Since it was written the server has grown to **58 tools**
+> (14 species, 14 occurrence, 18 registry, 4 maps, 2 literature, 3 vocabularies, 3 validator),
+> moved to **MCP protocol revision 2026-07-28** on the v2 TypeScript SDK (Node 20+, 2025-era
+> clients still served), repaired retired GBIF endpoints (occurrence counts now use faceted
+> search; `/parser/name`, `/organization`, `/network`, `/installation`, EML documents and
+> literature-by-DOI fixed), and gained an agent install script. Tests: 261 unit, 32 protocol
+> conformance, plus a 58-tool adversarial matrix against the live API. The repository now lives
+> at <https://github.com/idss-mesa/gbif-mcp>. Current references: [README.md](README.md),
+> [TOOLS.md](TOOLS.md), [CLAUDE.md](CLAUDE.md). A current summary is at the end of this file.
+
 ## Phase 1 Implementation Progress
 
 ### ✅ Phase 1.1: Core Infrastructure Tests - COMPLETE
@@ -310,3 +321,22 @@ describe('ServiceName', () => {
 *Last Updated: 2026-02-03*
 *Phase 1 COMPLETE - All 3 sub-phases at 100% success rate*
 *Ready for Phase 2 (Service Enhancement) or Phase 3 (Missing Tools)*
+
+---
+
+## Current status (2026-10-18, v1.1.0)
+
+| Suite | Command | Result |
+|---|---|---|
+| Unit (MSW-mocked GBIF API) | `npm run test:unit -- --run` | 50 files, 261 tests passing |
+| MCP integration (protocol, size limits, stdio conformance) | `npm run test:integration:mcp` | 3 files, 32 tests passing |
+| Stdio conformance only (2026-07-28 + legacy clients, official v2 client, exit on stdin EOF) | `npm run test:integration:protocol` | 18 tests passing |
+| Live GBIF API, adversarial matrix for all 58 tools | `npm run test:integration:api` | 58 tools, ~400 calls, 0 unexpected results (download/validator calls skipped without credentials) |
+| Coverage (unit) | `npm run test:coverage` | 67.6% lines, 65.6% branches, 73.9% functions |
+
+What changed since the Phase 1 report above:
+
+- `tests/integration/mcp/stdio-protocol.test.ts` spawns the real server from source and drives it as a 2026-07-28 client (raw JSON-RPC with the `_meta` envelope and `server/discover`), as a 2025-era client (`initialize`), and through the official `@modelcontextprotocol/client` in auto, pinned and legacy negotiation modes. It also checks that the process exits when stdin closes.
+- `tests/integration/api/all-tools.integration.test.ts` is the adversarial matrix: one valid call plus hostile or invalid calls for every tool, run over stdio against the live API. Run it after touching any service endpoint.
+- The circuit breaker tests cover the rule that only 5xx, 429, 408, network errors and timeouts count as failures; 4xx answers reset the breaker.
+- Service tests cover the repaired endpoints: faceted occurrence counts, `POST /parser/name`, `/organization`, `/network` and `/installation` searches, EML documents fetched as XML, and literature lookup by DOI.

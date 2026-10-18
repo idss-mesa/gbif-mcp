@@ -1,7 +1,7 @@
 site_name: GBIF MCP Server
 site_description: Model Context Protocol server providing comprehensive access to GBIF biodiversity data
-site_url: https://github.com/yourusername/gbif-mcp
-repo_url: https://github.com/yourusername/gbif-mcp
+site_url: https://idss-mesa.github.io/gbif-mcp/
+repo_url: https://github.com/idss-mesa/gbif-mcp
 repo_name: gbif-mcp
 edit_uri: edit/main/docs/
 
@@ -84,7 +84,7 @@ extra:
     provider: mike
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/yourusername/gbif-mcp
+      link: https://github.com/idss-mesa/gbif-mcp
   analytics:
     feedback:
       title: Was this page helpful?
@@ -102,41 +102,16 @@ nav:
   - Home:
     - Overview: index.md
     - Features: getting-started/features.md
-    - Quick Example: getting-started/quick-example.md
-
   - Getting Started:
     - Installation: getting-started/installation.md
     - Quick Start: getting-started/quick-start.md
     - Configuration: getting-started/configuration.md
-    - Docker Deployment: getting-started/docker.md
-
   - User Guide:
     - Overview: user-guide/overview.md
-    - Species Tools: user-guide/species-tools.md
-    - Occurrence Tools: user-guide/occurrence-tools.md
-    - Registry Tools: user-guide/registry-tools.md
-    - Maps Tools: user-guide/maps-tools.md
-    - Literature Tools: user-guide/literature-tools.md
-    - Vocabularies Tools: user-guide/vocabularies-tools.md
-    - Validator Tools: user-guide/validator-tools.md
-
-  - Developer Guide:
-    - Architecture: developer-guide/architecture.md
-    - Adding Tools: developer-guide/adding-tools.md
-    - Testing: developer-guide/testing.md
-    - Contributing: developer-guide/contributing.md
-
   - API Reference:
     - All Tools: api-reference/tools.md
-    - Services: api-reference/services.md
-    - Types: api-reference/types.md
-
   - Examples:
     - Basic Queries: examples/basic-queries.md
-    - Advanced Filtering: examples/advanced-filtering.md
-    - Statistics & Dashboards: examples/statistics.md
-    - Data Validation: examples/validation.md
-    - Map Generation: examples/maps.md
 
 copyright: Copyright &copy; 2024-2026 GBIF MCP Server Contributors
 

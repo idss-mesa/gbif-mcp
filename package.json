@@ -20,7 +20,8 @@
     "clean": "rimraf build",
     "typecheck": "tsc --noEmit",
     "test:integration:protocol": "vitest tests/integration/mcp/stdio-protocol.test.ts --run",
-    "install:agents": "bash scripts/install.sh"
+    "install:agents": "bash scripts/install.sh",
+    "docs:tools": "node scripts/gen-tools-md.mjs TOOLS.md"
   },
   "keywords": [
     "mcp",
@@ -58,5 +59,13 @@
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/idss-mesa/gbif-mcp.git"
+  },
+  "homepage": "https://github.com/idss-mesa/gbif-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/idss-mesa/gbif-mcp/issues"
   }
 }

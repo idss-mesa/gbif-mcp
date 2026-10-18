@@ -1,5 +1,16 @@
 # Phase 3: Missing MCP Tools Implementation - COMPLETE
 
+> **Status (updated 2026-10-18, v1.1.0).** This document is a historical snapshot from February 2026 (Phase 3, 44 tools)
+> and is kept for the project record. Since it was written the server has grown to **58 tools**
+> (14 species, 14 occurrence, 18 registry, 4 maps, 2 literature, 3 vocabularies, 3 validator),
+> moved to **MCP protocol revision 2026-07-28** on the v2 TypeScript SDK (Node 20+, 2025-era
+> clients still served), repaired retired GBIF endpoints (occurrence counts now use faceted
+> search; `/parser/name`, `/organization`, `/network`, `/installation`, EML documents and
+> literature-by-DOI fixed), and gained an agent install script. Tests: 261 unit, 32 protocol
+> conformance, plus a 58-tool adversarial matrix against the live API. The repository now lives
+> at <https://github.com/idss-mesa/gbif-mcp>. Current references: [README.md](README.md),
+> [TOOLS.md](TOOLS.md), [CLAUDE.md](CLAUDE.md).
+
 ## Executive Summary
 
 Successfully implemented **26 new MCP tools** across 5 GBIF API categories, increasing total tools from 18 to 44 (144% increase). All tools follow established patterns, include comprehensive parameter descriptions, and integrate seamlessly with existing infrastructure.

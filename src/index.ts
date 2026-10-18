@@ -290,7 +290,7 @@ class GBIFMCPServer {
         name: config.server.name,
         version: config.server.version,
         title: 'GBIF Biodiversity Data',
-        websiteUrl: 'https://github.com/tyson-swetnam/gbif-mcp',
+        websiteUrl: 'https://github.com/idss-mesa/gbif-mcp',
       },
       {
         capabilities: {

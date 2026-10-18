@@ -77,7 +77,7 @@ Taxonomy, identification, and species information:
 - **Metrics** - Quick species statistics
 - **Related** - Find similar species
 
-[See all species tools →](../user-guide/species-tools.md)
+[See all species tools →](../api-reference/tools.md#species-tools-14)
 
 ### 📊 Occurrence Tools (14 tools)
 
@@ -88,9 +88,9 @@ Observation and specimen records:
 - **Statistics Suite** - 7 breakdown endpoints
 - **Downloads** - Large dataset exports
 
-[See all occurrence tools →](../user-guide/occurrence-tools.md)
+[See all occurrence tools →](../api-reference/tools.md#occurrence-tools-14)
 
-### 📚 Registry Tools (17 tools)
+### 📚 Registry Tools (18 tools)
 
 Dataset and institutional metadata:
 
@@ -99,7 +99,7 @@ Dataset and institutional metadata:
 - **GRSciColl** - Natural history collections
 - **Nodes** - GBIF participant info
 
-[See all registry tools →](../user-guide/registry-tools.md)
+[See all registry tools →](../api-reference/tools.md#registry-tools-18)
 
 ### 🗺️ Maps Tools (4 tools)
 
@@ -109,7 +109,7 @@ Visualization and tile generation:
 - Vector (MVT) and raster (PNG) formats
 - Custom styling and filters
 
-[See all maps tools →](../user-guide/maps-tools.md)
+[See all maps tools →](../api-reference/tools.md#maps-tools-4)
 
 ## Common Workflows
 
@@ -173,10 +173,10 @@ All tools return responses in this format:
 
 ## Next Steps
 
-- [Explore all 57 tools](../user-guide/overview.md)
+- [Explore all 58 tools](../user-guide/overview.md)
 - [See advanced examples](../examples/basic-queries.md)
 - [Configure the server](configuration.md)
-- [Learn the architecture](../developer-guide/architecture.md)
+- [Learn the architecture](../ARCHITECTURE.md)
 
 ## Tips
 

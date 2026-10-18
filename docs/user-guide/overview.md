@@ -1,6 +1,6 @@
 # User Guide Overview
 
-Complete guide to all 57 GBIF MCP tools organized by category.
+Complete guide to all 58 GBIF MCP tools organized by category.
 
 ## Tool Categories
 
@@ -10,11 +10,11 @@ The GBIF MCP Server provides **57 tools** across **7 major categories**, each se
 
 | Category | Tools | Coverage | Use Cases |
 |----------|-------|----------|-----------|
-| [Species](species-tools.md) | 14 | 70% | Taxonomy, identification, name parsing |
-| [Occurrence](occurrence-tools.md) | 14 | 56% | Observations, specimens, statistics |
-| [Registry](registry-tools.md) | 17 | 57% | Datasets, institutions, metadata |
-| [Maps](maps-tools.md) | 4 | 67% | Visualization, tile generation |
-| [Statistics](statistics-tools.md) | 7 | - | Counts, trends, analysis |
+| [Species](../api-reference/tools.md#species-tools-14) | 14 | 70% | Taxonomy, identification, name parsing |
+| [Occurrence](../api-reference/tools.md#occurrence-tools-14) | 14 | 56% | Observations, specimens, statistics |
+| [Registry](../api-reference/tools.md#registry-tools-18) | 18 | 57% | Datasets, institutions, metadata |
+| [Maps](../api-reference/tools.md#maps-tools-4) | 4 | 67% | Visualization, tile generation |
+| [Statistics](../api-reference/tools.md#occurrence-tools-14) | 7 | - | Counts, trends, analysis |
 | [Literature](../api-reference/tools.md#literature) | 2 | 50% | Research impact |
 | [Vocabularies](../api-reference/tools.md#vocabularies) | 3 | 60% | Standards, valid values |
 | [Validator](../api-reference/tools.md#validator) | 3 | 30% | Quality assurance |
@@ -221,7 +221,7 @@ Common errors:
 
 ## Next Steps
 
-- [Explore Species Tools](species-tools.md)
-- [Explore Occurrence Tools](occurrence-tools.md)
+- [Explore Species Tools](../api-reference/tools.md#species-tools-14)
+- [Explore Occurrence Tools](../api-reference/tools.md#occurrence-tools-14)
 - [See Examples](../examples/basic-queries.md)
-- [Configure the Server](configuration.md)
+- [Configure the Server](../getting-started/configuration.md)

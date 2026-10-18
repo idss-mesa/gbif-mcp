@@ -286,6 +286,5 @@ Real-world examples demonstrating common GBIF MCP Server use cases.
 
 ## Next Steps
 
-- [Advanced Filtering Examples](../examples/statistics.md)
 - [User Guide](../user-guide/overview.md)
 - [API Reference](../api-reference/tools.md)

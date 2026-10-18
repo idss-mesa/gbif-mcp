@@ -12,6 +12,30 @@ Base URL: `https://api.gbif.org/v1`
 7. [Validator API](#7-validator-api)
 8. [MCP Implementation Considerations](#mcp-implementation-considerations)
 
+## Implementation status and corrections (2026-10-18)
+
+This analysis was written before the server existed. The server now implements 58 tools over
+these endpoints (see [TOOLS.md](TOOLS.md)); the adversarial matrix in
+`tests/integration/api/all-tools.integration.test.ts` exercises every tool against the live API.
+Live testing showed that several endpoints described below behave differently from the
+original write-up:
+
+| Section | Endpoint as analysed | What the live API does | What the server uses |
+|---|---|---|---|
+| 1.4 | `GET /parser/name?name=` | Works, but one name per call | `POST /parser/name` with a JSON array of names (`gbif_species_parse_names`) |
+| 2.9 | `GET /occurrence/counts/{basisOfRecord,year,datasets,countries,publishingCountries}` | Retired, or returned without applying filters | `GET /occurrence/search?limit=0&facet=X&facetLimit=N`; every search filter applies (all `gbif_occurrence_counts_by_*` tools) |
+| 3.3 | `GET /dataset/{key}/document` | Answers 406 unless the client accepts XML | Same path with `Accept: application/xml`, returned as text (`gbif_registry_dataset_document`) |
+| 3.7 | `GET /organization/search` | 404 | `GET /organization` with `q`, `country`, `isEndorsed`, paging (`gbif_registry_search_organizations`) |
+| 3.11 | `GET /installation/search` | 404 | `GET /installation` (`gbif_registry_search_installations`) |
+| 3.13 | `GET /network/search` | 404 | `GET /network` (`gbif_registry_search_networks`) |
+| 5.2 | `GET /literature/{id}` | Internal ids are not exposed to callers | `GET /literature/search?doi=…&limit=1` with DOI prefixes normalised (`gbif_literature_get`) |
+
+Not implemented (by design): 2.4 occurrence fragment, 2.7 user downloads list, 2.10/2.11 schema
+and inventory, 3.5/3.6 dataset constituents and networks, 3.10 organization installations,
+3.15 network constituents, 3.20 staff, 4.3 adhoc static maps, 5.3 literature export, 6.4 is
+covered through the generic vocabulary tools, 7.2 EML validation and 7.4 quality reports.
+Every other endpoint in sections 1 to 7 has a tool.
+
 ---
 
 ## 1. Species API
@@ -202,6 +226,8 @@ The Species API provides access to GBIF's taxonomic backbone and related nomencl
 ---
 
 ### 1.4 Name Parser
+
+> **Correction (2026-10-18):** the server uses the bulk `POST /parser/name` endpoint (JSON array body) for `gbif_species_parse_names`; the GET form works but parses one name per call.
 
 **Endpoint:** `GET /parser/name`
 
@@ -995,6 +1021,8 @@ Same as individual record in search results, but includes additional fields:
 
 ### 2.9 Occurrence Metrics (Catalog)
 
+> **Correction (2026-10-18):** these `/occurrence/counts/*` endpoints are retired or ignore filters on the live API. The server derives all breakdowns from faceted search instead: `GET /occurrence/search?limit=0&facet=<dimension>&facetLimit=<n>`, which honours every search filter.
+
 **Endpoint:** `GET /occurrence/counts/catalog`
 
 **Purpose:** Get comprehensive occurrence metrics broken down by various dimensions.
@@ -1136,6 +1164,8 @@ The Registry API provides access to datasets, organizations, installations, and 
 
 ### 3.3 Dataset Metadata (EML)
 
+> **Correction (2026-10-18):** the endpoint returns 406 unless the request carries `Accept: application/xml`. The server sends that header and returns the document as text.
+
 **Endpoint:** `GET /dataset/{key}/document`
 
 **Purpose:** Retrieve the original EML (Ecological Metadata Language) document.
@@ -1204,6 +1234,8 @@ The Registry API provides access to datasets, organizations, installations, and 
 ---
 
 ### 3.7 Organization Search
+
+> **Correction (2026-10-18):** `/organization/search` returns 404. Search is `GET /organization` with the same query parameters.
 
 **Endpoint:** `GET /organization/search`
 
@@ -1281,6 +1313,8 @@ The Registry API provides access to datasets, organizations, installations, and 
 
 ### 3.11 Installation Search
 
+> **Correction (2026-10-18):** `/installation/search` returns 404; use `GET /installation`.
+
 **Endpoint:** `GET /installation/search`
 
 **Purpose:** Search technical installations (IPT servers, DiGIR, etc.).
@@ -1304,6 +1338,8 @@ The Registry API provides access to datasets, organizations, installations, and 
 ---
 
 ### 3.13 Network Search
+
+> **Correction (2026-10-18):** `/network/search` returns 404; use `GET /network`.
 
 **Endpoint:** `GET /network/search`
 
@@ -1631,6 +1667,8 @@ The Literature API tracks scientific publications that cite GBIF-mediated data.
 ---
 
 ### 5.2 Literature Detail
+
+> **Correction (2026-10-18):** GBIF does not expose stable literature ids to callers. The server looks a paper up by DOI via `GET /literature/search?doi=<doi>&limit=1` and returns 404 when nothing matches.
 
 **Endpoint:** `GET /literature/{id}`
 

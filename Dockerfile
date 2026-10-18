@@ -61,6 +61,6 @@ ENTRYPOINT ["dumb-init", "--"]
 CMD ["node", "build/index.js"]
 
 # Metadata
-LABEL org.opencontainers.image.source="https://github.com/tyson-swetnam/gbif-mcp"
+LABEL org.opencontainers.image.source="https://github.com/idss-mesa/gbif-mcp"
 LABEL org.opencontainers.image.description="MCP server providing access to GBIF biodiversity data"
 LABEL org.opencontainers.image.licenses="MIT"

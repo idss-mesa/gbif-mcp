@@ -1,5 +1,16 @@
 # GBIF MCP Server - Implementation Summary
 
+> **Status (updated 2026-10-18, v1.1.0).** This document is a historical snapshot from November 4, 2025 (first 18-tool release)
+> and is kept for the project record. Since it was written the server has grown to **58 tools**
+> (14 species, 14 occurrence, 18 registry, 4 maps, 2 literature, 3 vocabularies, 3 validator),
+> moved to **MCP protocol revision 2026-07-28** on the v2 TypeScript SDK (Node 20+, 2025-era
+> clients still served), repaired retired GBIF endpoints (occurrence counts now use faceted
+> search; `/parser/name`, `/organization`, `/network`, `/installation`, EML documents and
+> literature-by-DOI fixed), and gained an agent install script. Tests: 261 unit, 32 protocol
+> conformance, plus a 58-tool adversarial matrix against the live API. The repository now lives
+> at <https://github.com/idss-mesa/gbif-mcp>. Current references: [README.md](README.md),
+> [TOOLS.md](TOOLS.md), [CLAUDE.md](CLAUDE.md).
+
 **Project**: Model Context Protocol Server for GBIF API
 **Status**: ✅ **PRODUCTION READY**
 **Completion Date**: November 4, 2025
@@ -165,7 +176,7 @@ The GBIF MCP Server has been successfully implemented from scratch following the
 ## Technology Stack
 
 - **Language**: TypeScript 5.3 (strict mode)
-- **Runtime**: Node.js 18+
+- **Runtime**: Node.js 18+ at the time; now Node.js 20+
 - **Protocol**: MCP (Model Context Protocol)
 - **HTTP Client**: axios 1.6
 - **Validation**: Zod 3.22
@@ -173,7 +184,7 @@ The GBIF MCP Server has been successfully implemented from scratch following the
 - **Caching**: lru-cache 10.0
 - **Rate Limiting**: p-queue 8.0
 - **Testing**: Vitest 1.0
-- **MCP SDK**: @modelcontextprotocol/sdk 1.0
+- **MCP SDK**: @modelcontextprotocol/sdk 1.0 at the time; now @modelcontextprotocol/server 2.x (MCP 2026-07-28)
 
 ---
 
@@ -276,7 +287,7 @@ b67a67d - Initial commit
 ### Installation
 
 ```bash
-cd /Users/tswetnam/Desktop/gbif-mcp
+cd /path/to/gbif-mcp
 npm install
 npm run build
 ```
@@ -290,7 +301,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
   "mcpServers": {
     "gbif": {
       "command": "node",
-      "args": ["/Users/tswetnam/Desktop/gbif-mcp/build/index.js"]
+      "args": ["build/index.js"]
     }
   }
 }

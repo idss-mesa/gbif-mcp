@@ -2,9 +2,9 @@
 
 **Comprehensive Model Context Protocol server for GBIF biodiversity data**
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/yourusername/gbif-mcp)
-[![Coverage](https://img.shields.io/badge/coverage-74.61%25-green)](https://github.com/yourusername/gbif-mcp)
-[![Tools](https://img.shields.io/badge/tools-57-blue)](https://github.com/yourusername/gbif-mcp)
+[![Node 20+](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org/)
+[![MCP 2026-07-28](https://img.shields.io/badge/MCP-2026--07--28-blue)](https://modelcontextprotocol.io/)
+[![Tools](https://img.shields.io/badge/tools-58-blue)](https://github.com/idss-mesa/gbif-mcp)
 [![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)](LICENSE)
 
 ## What is GBIF MCP Server?
@@ -28,7 +28,7 @@ The GBIF MCP Server provides AI assistants with comprehensive programmatic acces
 **7 Major Categories:**
 - **Species** (14 tools) - Taxonomy, identification, name parsing
 - **Occurrence** (14 tools) - Observations, specimens, complete statistics
-- **Registry** (17 tools) - Datasets, organizations, GRSciColl
+- **Registry** (18 tools) - Datasets, organizations, GRSciColl
 - **Maps** (4 tools) - Tile generation, visualization
 - **Literature** (2 tools) - Research impact tracking
 - **Vocabularies** (3 tools) - Data standards
@@ -36,7 +36,7 @@ The GBIF MCP Server provides AI assistants with comprehensive programmatic acces
 
 ### Production Quality
 
-- ✅ **246 tests** (100% passing, 74.61% coverage)
+- ✅ **261 unit tests** plus 32 protocol tests and a 58-tool live-API matrix
 - ✅ **Circuit breaker** pattern for reliability
 - ✅ **LRU caching** for performance
 - ✅ **Rate limiting** and retry logic
@@ -47,7 +47,7 @@ The GBIF MCP Server provides AI assistants with comprehensive programmatic acces
 
 - 📝 Comprehensive parameter descriptions
 - 🎯 Real-world usage examples
-- 🧪 Well-tested (246 tests)
+- 🧪 Well-tested (261 unit + 32 protocol tests, live adversarial matrix)
 - 🏗️ Clean architecture
 - 📚 Complete documentation
 
@@ -81,24 +81,29 @@ The GBIF MCP Server provides AI assistants with comprehensive programmatic acces
 
 Choose your installation method:
 
-=== "NPM"
+=== "Install script"
     ```bash
-    npm install -g gbif-mcp
+    git clone https://github.com/idss-mesa/gbif-mcp.git
+    cd gbif-mcp
+    npm install && npm run build
+    npm run install:agents   # Claude Code/Desktop, Codex, Gemini, Goose, OpenCode
     ```
 
 === "Docker"
     ```bash
-    docker pull gbif-mcp:latest
-    docker run -i gbif-mcp
+    git clone https://github.com/idss-mesa/gbif-mcp.git
+    cd gbif-mcp
+    docker build -t gbif-mcp:latest .
+    docker run -i --rm gbif-mcp:latest
     ```
 
 === "From Source"
     ```bash
-    git clone https://github.com/yourusername/gbif-mcp.git
+    git clone https://github.com/idss-mesa/gbif-mcp.git
     cd gbif-mcp
     npm install
     npm run build
-    npm start
+    node build/index.js
     ```
 
 [Get Started →](getting-started/installation.md){ .md-button .md-button--primary }
@@ -150,13 +155,13 @@ graph LR
 1. [Install the server](getting-started/installation.md)
 2. [Configure for your environment](getting-started/configuration.md)
 3. [Try basic queries](getting-started/quick-start.md)
-4. [Explore all 57 tools](user-guide/overview.md)
+4. [Explore all 58 tools](user-guide/overview.md)
 5. [See advanced examples](examples/basic-queries.md)
 
 ## Support
 
-- 📖 [Documentation](https://yoursite.com/docs)
-- 💬 [GitHub Issues](https://github.com/yourusername/gbif-mcp/issues)
+- 📖 [Documentation](https://idss-mesa.github.io/gbif-mcp/)
+- 💬 [GitHub Issues](https://github.com/idss-mesa/gbif-mcp/issues)
 - 🌐 [GBIF Portal](https://www.gbif.org)
 - 📧 [GBIF Support](https://www.gbif.org/contact-us)
 

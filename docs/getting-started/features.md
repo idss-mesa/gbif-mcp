@@ -2,7 +2,7 @@
 
 ## Comprehensive Tool Suite
 
-### 57 Production-Ready Tools
+### 58 Production-Ready Tools
 
 **Species & Taxonomy (14 tools)**
 - Comprehensive species search and identification
@@ -18,7 +18,7 @@
 - Large dataset downloads
 - Verbatim data access
 
-**Metadata & Discovery (17 tools)**
+**Metadata & Discovery (18 tools)**
 - 100,000+ dataset search
 - Organization and publisher info
 - GRSciColl integration (collections, institutions)
@@ -78,11 +78,10 @@
 
 ### Testing
 
-✅ **246 Tests (100% passing)**
+✅ **261 unit tests, 32 protocol tests, 58-tool live adversarial matrix (all passing)**
 - Core infrastructure: 92% coverage
 - Services: 75% coverage
 - Tools: 85% coverage
-- Overall: 74.61% coverage
 
 ✅ **Comprehensive Test Suite**
 - Unit tests for all components

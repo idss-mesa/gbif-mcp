@@ -1,6 +1,6 @@
 # Complete Tool Reference
 
-Comprehensive reference for all 57 GBIF MCP tools.
+Comprehensive reference for all 58 GBIF MCP tools.
 
 ## Species Tools (14)
 
@@ -314,7 +314,7 @@ Institutional contributions.
 
 ---
 
-## Registry Tools (17)
+## Registry Tools (18)
 
 ### Datasets
 
@@ -441,5 +441,5 @@ Common enum values used across tools:
 
 - Check specific tool guides for detailed examples
 - See [Examples](../examples/basic-queries.md) for real-world usage
-- Review [Developer Guide](../developer-guide/architecture.md) for technical details
+- Review [Developer Guide](../ARCHITECTURE.md) for technical details
 - Browse [GBIF API Documentation](https://www.gbif.org/developer/summary) for endpoint details

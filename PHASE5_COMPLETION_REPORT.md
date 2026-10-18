@@ -1,6 +1,17 @@
 # Phase 5 Completion Report: MCP Tool Wrappers
 
-**Date**: November 4, 2024
+> **Status (updated 2026-10-18, v1.1.0).** This document is a historical snapshot from November 4, 2025 (Phase 5 of the original plan, 18 tools)
+> and is kept for the project record. Since it was written the server has grown to **58 tools**
+> (14 species, 14 occurrence, 18 registry, 4 maps, 2 literature, 3 vocabularies, 3 validator),
+> moved to **MCP protocol revision 2026-07-28** on the v2 TypeScript SDK (Node 20+, 2025-era
+> clients still served), repaired retired GBIF endpoints (occurrence counts now use faceted
+> search; `/parser/name`, `/organization`, `/network`, `/installation`, EML documents and
+> literature-by-DOI fixed), and gained an agent install script. Tests: 261 unit, 32 protocol
+> conformance, plus a 58-tool adversarial matrix against the live API. The repository now lives
+> at <https://github.com/idss-mesa/gbif-mcp>. Current references: [README.md](README.md),
+> [TOOLS.md](TOOLS.md), [CLAUDE.md](CLAUDE.md).
+
+**Date**: November 4, 2025
 **Status**: ✅ COMPLETE
 **Commit**: 0045cfe
 
@@ -460,5 +471,5 @@ Phase 5 successfully delivered a complete set of MCP tool wrappers covering all 
 
 ---
 
-*Report generated: November 4, 2024*
+*Report generated: November 4, 2025*
 *Implementation by: Claude Code (Sonnet 4.5)*

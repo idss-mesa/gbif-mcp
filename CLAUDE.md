@@ -26,6 +26,7 @@ npm run format       # Format code with Prettier
 npm run clean        # Remove build directory
 npm run typecheck    # Type-check without emitting files
 npm run install:agents  # Register the server with Claude Code/Desktop, Codex, Gemini, Goose, OpenCode (scripts/install.sh)
+npm run docs:tools      # Regenerate TOOLS.md from the built server's tools/list (scripts/gen-tools-md.mjs)
 ```
 
 Run a single test file: `npm test -- tests/unit/species.service.test.ts`
