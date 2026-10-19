@@ -90,7 +90,7 @@ echo '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.
 ```
 
 The response lists the supported protocol version (`2026-07-28`) and the server's capabilities.
-A `tools/list` request with the same `_meta` envelope returns all 58 tools.
+A `tools/list` request with the same `_meta` envelope returns all 59 tools.
 
 ## Configuration
 

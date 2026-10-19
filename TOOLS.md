@@ -6,12 +6,12 @@ To regenerate after changing a tool, run `npm run build` and then `node scripts/
 
 ## Overview
 
-**Total tools: 58**
+**Total tools: 59**
 
 | Category | Tools |
 |---|---|
 | [Species](#species-tools) | 14 |
-| [Occurrence](#occurrence-tools) | 14 |
+| [Occurrence](#occurrence-tools) | 15 |
 | [Registry](#registry-tools) | 18 |
 | [Maps](#maps-tools) | 4 |
 | [Literature](#literature-tools) | 2 |
@@ -275,7 +275,7 @@ Request an asynchronous download for large occurrence datasets beyond pagination
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `creator` | string | yes | GBIF username (creator of the download). This is your GBIF.org username. Example: "john.smith". Required for download attribution and access control. (min length 1) |
+| `creator` | string | no | GBIF username (creator of the download). This is your GBIF.org username. Example: "john.smith". Defaults to the configured GBIF_USERNAME; must match the authenticated account. (min length 1) |
 | `notificationAddresses` | array<string> | no | Email addresses to notify when download completes. Receives notification with download link when processing is finished. Example: ["user@example.com"]. Optional, but highly recommended for large downloads that may take hours to process. |
 | `sendNotification` | boolean | no | Send email notification on completion. Set to true (default) to receive email when download is ready, false to skip notifications. Recommended: true for downloads that take more than a few minutes. (default `true`) |
 | `format` | enum | no | Download format. DWCA (Darwin Core Archive) = Full format with metadata and extensions, most comprehensive. SIMPLE_CSV = Simplified CSV format, easier to work with in spreadsheets. SPECIES_LIST = List of unique species only, no occurrence records. Default: SIMPLE_CSV. (one of `DWCA`, `SIMPLE_CSV`, `SPECIES_LIST`; default `"SIMPLE_CSV"`) |
@@ -303,6 +303,17 @@ Check the status and retrieve metadata for an occurrence download request. Retur
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `downloadKey` | string | yes | Download key returned from gbif_occurrence_download_request (min length 1) |
+
+### gbif_occurrence_download_list
+
+List your past GBIF occurrence downloads, newest first, so earlier downloads can be found again without their key. Returns each download's key, status, creation date, record count, format, a short description of its filters, DOI (for citation) and download link. REQUIRES AUTHENTICATION: GBIF only lists downloads for the account set in GBIF_USERNAME and GBIF_PASSWORD.
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `username` | string | no | GBIF username whose downloads to list. Defaults to the configured GBIF_USERNAME. GBIF only allows listing the downloads of the account the server is authenticated as. (min length 1) |
+| `status` | array<enum> | no | Only return downloads in these states. Example: ["SUCCEEDED"] for finished downloads, ["PREPARING", "RUNNING"] for ones still in progress. Default: all states. (items one of `PREPARING`, `RUNNING`, `SUCCEEDED`, `FAILED`, `CANCELLED`, `KILLED`, `SUSPENDED`) |
+| `limit` | integer | no | Number of downloads to return (1-100). Default: 20. (default `20`; min 1; max 100) |
+| `offset` | integer | no | Number of downloads to skip, for paging through older downloads. Default: 0. (default `0`; min 0) |
 
 ### gbif_occurrence_verbatim
 

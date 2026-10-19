@@ -19,6 +19,11 @@ export const SERVER_ENTRY = resolve(PROJECT_ROOT, 'src/index.ts');
 export const SERVER_ENV: Record<string, string> = {
   ...(process.env as Record<string, string>),
   LOG_LEVEL: 'error',
+  // Blank credentials so the server runs unauthenticated even when the repo .env
+  // has them (dotenv never overrides a set variable). Otherwise the adversarial
+  // download cases would submit real download jobs against the developer's account.
+  GBIF_USERNAME: '',
+  GBIF_PASSWORD: '',
 };
 
 /** The reserved 2026-07-28 per-request `_meta` envelope a client must send. */

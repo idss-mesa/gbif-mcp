@@ -1,6 +1,6 @@
 # User Guide Overview
 
-Complete guide to all 58 GBIF MCP tools organized by category.
+Complete guide to all 59 GBIF MCP tools organized by category.
 
 ## Tool Categories
 

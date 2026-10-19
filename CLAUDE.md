@@ -66,7 +66,7 @@ The server implements **MCP 2026-07-28** through the v2 TypeScript SDK (`@modelc
    - `vocabularies/vocabularies.service.ts` - Standardized terminology
    - `validator/validator.service.ts` - Data quality validation
 
-5. **Tool Layer** (`src/tools/`): 58 MCP tools organized by domain, all inheriting from `BaseTool` abstract class. Each tool uses Zod schemas for input validation and converts them to JSON Schema via `zod-to-json-schema` (no `$schema` marker, `additionalProperties` only for `.strict()` objects). Override the `annotations` field for tools that are not read-only.
+5. **Tool Layer** (`src/tools/`): 59 MCP tools organized by domain, all inheriting from `BaseTool` abstract class. Each tool uses Zod schemas for input validation and converts them to JSON Schema via `zod-to-json-schema` (no `$schema` marker, `additionalProperties` only for `.strict()` objects). Override the `annotations` field for tools that are not read-only.
 
 6. **Response Truncation** (`src/utils/response-truncator.ts`): Integrated into `BaseTool.execute()` — automatically truncates responses exceeding 250KB (configurable). For paginated GBIF responses (those with `results` arrays), it fits as many results as possible under the limit and includes pagination guidance. Non-paginated responses get a metadata-only response.
 

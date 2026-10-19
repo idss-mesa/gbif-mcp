@@ -2,7 +2,7 @@
  * Adversarial end-to-end verification of EVERY tool against the live GBIF API.
  *
  * The real server is spawned over stdio and driven with the official v2 MCP client
- * negotiating the 2026-07-28 protocol era. For each of the 58 tools:
+ * negotiating the 2026-07-28 protocol era. For each of the 59 tools:
  *
  *  - a "valid" call with known-good GBIF inputs must succeed (no `isError`) and
  *    return well-formed JSON within the response size limit;
@@ -154,6 +154,12 @@ const CASES: ToolCase[] = [
     { label: 'nonexistent downloadKey', args: { downloadKey: '0000000-000000000000000' }, expect: 'error' },
     { label: 'hostile downloadKey', args: { downloadKey: HOSTILE_STRINGS[1] }, expect: 'error' },
     { label: 'downloadKey wrong type', args: { downloadKey: 123 }, expect: 'error' }] },
+  { tool: 'gbif_occurrence_download_list', validSkipReason: 'requires GBIF credentials', adversarial: [
+    { label: 'no credentials configured', args: {}, expect: 'error' },
+    { label: "another user's downloads", args: { username: 'gbif' }, expect: 'error' },
+    { label: 'invalid status enum', args: { status: ['DONE'] }, expect: 'error' },
+    { label: 'limit out of range', args: { limit: 1000 }, expect: 'error' },
+    { label: 'hostile username', args: { username: HOSTILE_STRINGS[1] }, expect: 'error' }] },
   { tool: 'gbif_occurrence_verbatim', valid: f => f.occurrenceKey ? { key: f.occurrenceKey } : undefined, adversarial: badKey() },
   { tool: 'gbif_occurrence_counts_by_basis_of_record', valid: { taxonKey: PUMA_CONCOLOR }, adversarial: taxonFilters() },
   { tool: 'gbif_occurrence_counts_by_year', valid: { taxonKey: PUMA_CONCOLOR, country: 'US' }, adversarial: taxonFilters() },
@@ -358,7 +364,7 @@ describe.each(CASES)('$tool', ({ tool, valid, validSkipReason, adversarial }) =>
 describe('server health after the adversarial matrix', () => {
   it('still lists every tool and answers a real query', async () => {
     const list = await client.listTools();
-    expect(list.tools).toHaveLength(58);
+    expect(list.tools).toHaveLength(59);
     const { result, json } = await call('gbif_species_match', { name: 'Puma concolor' });
     expect(result.isError).not.toBe(true);
     expect(json?.success).toBe(true);

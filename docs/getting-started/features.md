@@ -2,7 +2,7 @@
 
 ## Comprehensive Tool Suite
 
-### 58 Production-Ready Tools
+### 59 Production-Ready Tools
 
 **Species & Taxonomy (14 tools)**
 - Comprehensive species search and identification
@@ -78,7 +78,7 @@
 
 ### Testing
 
-✅ **261 unit tests, 32 protocol tests, 58-tool live adversarial matrix (all passing)**
+✅ **261 unit tests, 32 protocol tests, 59-tool live adversarial matrix (all passing)**
 - Core infrastructure: 92% coverage
 - Services: 75% coverage
 - Tools: 85% coverage

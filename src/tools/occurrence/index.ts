@@ -9,6 +9,7 @@ export { OccurrenceGetTool } from './occurrence-get.tool.js';
 export { OccurrenceCountTool } from './occurrence-count.tool.js';
 export { OccurrenceDownloadTool, OccurrenceDownloadPredicateBuilderTool } from './occurrence-download.tool.js';
 export { OccurrenceDownloadStatusTool } from './occurrence-download-status.tool.js';
+export { OccurrenceDownloadListTool } from './occurrence-download-list.tool.js';
 export { OccurrenceVerbatimTool } from './occurrence-verbatim.tool.js';
 export { OccurrenceCountsByBasisOfRecordTool } from './occurrence-counts-basis-of-record.tool.js';
 export { OccurrenceCountsByYearTool } from './occurrence-counts-by-year.tool.js';

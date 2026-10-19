@@ -32,7 +32,7 @@ Official client (already a devDependency): run from the repo root so modules res
 
 ## Flows worth driving
 
-- discover → tools/list (58 tools, `ttlMs` 3600000, `cacheScope` public) → a live tool call.
+- discover → tools/list (59 tools, `ttlMs` 3600000, `cacheScope` public) → a live tool call.
 - Repaired tools: `gbif_occurrence_counts_by_*` (must honour `taxonKey`/`country`),
   `gbif_species_parse_names`, `gbif_registry_search_{organizations,networks,installations}`,
   `gbif_registry_dataset_document` (XML), `gbif_literature_get` (DOI or doi.org URL).

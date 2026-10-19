@@ -2,7 +2,7 @@
 
 [![MCP 2026-07-28](https://img.shields.io/badge/MCP-2026--07--28-blue)](https://modelcontextprotocol.io/)
 [![Node 20+](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org/)
-[![58 tools](https://img.shields.io/badge/tools-58-informational)](#available-tools)
+[![59 tools](https://img.shields.io/badge/tools-59-informational)](#available-tools)
 [![License: CC BY 4.0](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)](LICENSE)
 
 A [Model Context Protocol](https://modelcontextprotocol.io/) server that gives AI assistants
@@ -257,7 +257,7 @@ A `.env` file in the project root is read during local development.
 
 ## Available tools
 
-58 tools across seven GBIF API sections. Every parameter carries a description, valid values
+59 tools across seven GBIF API sections. Every parameter carries a description, valid values
 and a real example value (for instance `taxonKey: 212` for family Felidae), so assistants can
 build correct queries without guessing. Results are paginated with `offset`/`limit` and an
 `endOfRecords` flag.
@@ -281,7 +281,7 @@ build correct queries without guessing. Results are paginated with `offset`/`lim
 | `gbif_species_media` | Images, sounds and videos |
 | `gbif_species_metrics` | Occurrence statistics for a species: record, dataset and country counts, basis-of-record breakdown |
 
-### Occurrence (14)
+### Occurrence (15)
 
 | Tool | Purpose |
 |---|---|
@@ -297,8 +297,9 @@ build correct queries without guessing. Results are paginated with `offset`/`lim
 | `gbif_occurrence_counts_by_taxon` | Breakdown by species within a higher taxon |
 | `gbif_occurrence_counts_by_publishing_org` | Breakdown by publishing organization |
 | `gbif_occurrence_download_predicate_builder` | Build a download predicate from search filters |
-| `gbif_occurrence_download_request` | Request a download (needs credentials) |
+| `gbif_occurrence_download_request` | Request a download (needs credentials; `creator` defaults to `GBIF_USERNAME`) |
 | `gbif_occurrence_download_status` | Check a download's status |
+| `gbif_occurrence_download_list` | List your past downloads with keys, DOIs and links (needs credentials) |
 
 The "counts by" tools use GBIF faceted search, so every filter of `gbif_occurrence_search`
 applies to them.
@@ -442,7 +443,7 @@ src/
   index.ts            GBIFMCPServer: McpServer factory, serveStdio, tool dispatch, shutdown
   core/gbif-client.ts HTTP client: queue, rate limit, LRU cache, retries, circuit breaker
   services/           one service per GBIF API section
-  tools/              58 tools, one class each, Zod input schemas → JSON Schema
+  tools/              59 tools, one class each, Zod input schemas → JSON Schema
   protocol/           error formatting, correlation IDs
   utils/              response truncation, logging
 tests/

@@ -4,7 +4,7 @@
 
 [![Node 20+](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org/)
 [![MCP 2026-07-28](https://img.shields.io/badge/MCP-2026--07--28-blue)](https://modelcontextprotocol.io/)
-[![Tools](https://img.shields.io/badge/tools-58-blue)](https://github.com/idss-mesa/gbif-mcp)
+[![Tools](https://img.shields.io/badge/tools-59-blue)](https://github.com/idss-mesa/gbif-mcp)
 [![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)](LICENSE)
 
 ## What is GBIF MCP Server?
@@ -36,7 +36,7 @@ The GBIF MCP Server provides AI assistants with comprehensive programmatic acces
 
 ### Production Quality
 
-- ✅ **261 unit tests** plus 32 protocol tests and a 58-tool live-API matrix
+- ✅ **261 unit tests** plus 32 protocol tests and a 59-tool live-API matrix
 - ✅ **Circuit breaker** pattern for reliability
 - ✅ **LRU caching** for performance
 - ✅ **Rate limiting** and retry logic
@@ -155,7 +155,7 @@ graph LR
 1. [Install the server](getting-started/installation.md)
 2. [Configure for your environment](getting-started/configuration.md)
 3. [Try basic queries](getting-started/quick-start.md)
-4. [Explore all 58 tools](user-guide/overview.md)
+4. [Explore all 59 tools](user-guide/overview.md)
 5. [See advanced examples](examples/basic-queries.md)
 
 ## Support

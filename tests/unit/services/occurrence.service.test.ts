@@ -203,6 +203,54 @@ describe('OccurrenceService', () => {
     });
   });
 
+  describe('listUserDownloads', () => {
+    it('should list a user\'s downloads with paging and a comma-separated status filter', async () => {
+      let url: URL | null = null;
+      server.use(
+        http.get('http://localhost:3000/occurrence/download/user/jsmith', ({ request }) => {
+          url = new URL(request.url);
+          return HttpResponse.json({ offset: 5, limit: 10, endOfRecords: true, count: 1, results: [{ key: 'dl-1' }] });
+        })
+      );
+
+      const result = await service.listUserDownloads(' jsmith ', { offset: 5, limit: 10, status: ['SUCCEEDED', 'RUNNING'] });
+
+      expect(result.results?.[0].key).toBe('dl-1');
+      expect(url!.searchParams.get('offset')).toBe('5');
+      expect(url!.searchParams.get('limit')).toBe('10');
+      expect(url!.searchParams.get('status')).toBe('SUCCEEDED,RUNNING');
+    });
+
+    it('should omit the status filter when none is given', async () => {
+      let url: URL | null = null;
+      server.use(
+        http.get('http://localhost:3000/occurrence/download/user/jsmith', ({ request }) => {
+          url = new URL(request.url);
+          return HttpResponse.json({ results: [] });
+        })
+      );
+
+      await service.listUserDownloads('jsmith');
+
+      expect(url!.searchParams.has('status')).toBe(false);
+      expect(url!.searchParams.get('limit')).toBe('20');
+    });
+
+    it('should report a 401 for another user\'s list', async () => {
+      server.use(
+        http.get('http://localhost:3000/occurrence/download/user/other', () => {
+          return new HttpResponse('Unauthorized', { status: 401 });
+        })
+      );
+
+      await expect(service.listUserDownloads('other')).rejects.toThrow('401');
+    });
+
+    it('should validate username', async () => {
+      await expect(service.listUserDownloads('  ')).rejects.toThrow('Username is required');
+    });
+  });
+
   describe('facet counts', () => {
     it('should derive counts-by-field from a faceted occurrence search honouring filters', async () => {
       let url: URL | null = null;

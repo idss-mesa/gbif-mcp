@@ -13,7 +13,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { RawStdioSession, MODERN_META, connectClient, parseToolText } from '../helpers/stdio-server.js';
 
-const EXPECTED_TOOL_COUNT = 58;
+const EXPECTED_TOOL_COUNT = 59;
 const sessions: RawStdioSession[] = [];
 const open = () => {
   const s = new RawStdioSession();

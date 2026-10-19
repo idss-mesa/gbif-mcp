@@ -173,7 +173,7 @@ All tools return responses in this format:
 
 ## Next Steps
 
-- [Explore all 58 tools](../user-guide/overview.md)
+- [Explore all 59 tools](../user-guide/overview.md)
 - [See advanced examples](../examples/basic-queries.md)
 - [Configure the server](configuration.md)
 - [Learn the architecture](../ARCHITECTURE.md)

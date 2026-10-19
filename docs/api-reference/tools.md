@@ -1,6 +1,6 @@
 # Complete Tool Reference
 
-Comprehensive reference for all 58 GBIF MCP tools.
+Comprehensive reference for all 59 GBIF MCP tools.
 
 ## Species Tools (14)
 
@@ -183,7 +183,7 @@ Parse and standardize scientific names (batch processing).
 
 ---
 
-## Occurrence Tools (14)
+## Occurrence Tools (15)
 
 ### Core Occurrence Operations
 
@@ -234,7 +234,7 @@ Get original, unprocessed occurrence data.
 Request large dataset download (requires auth).
 
 **Parameters:**
-- `creator` (string, required) - GBIF username
+- `creator` (string, optional) - GBIF username; defaults to `GBIF_USERNAME`
 - `predicate` (object, required) - Download filters
 - `format` (enum, optional) - DWCA, SIMPLE_CSV, SPECIES_LIST
 - `notificationAddresses` (array, optional) - Email notifications
@@ -247,6 +247,18 @@ Check download job status.
 
 **Parameters:**
 - `downloadKey` (string, required) - Download ID
+
+---
+
+#### `gbif_occurrence_download_list`
+
+List your past downloads, newest first, with key, status, record count, filter summary, DOI and download link (requires auth).
+
+**Parameters:**
+- `username` (string, optional) - GBIF username; defaults to `GBIF_USERNAME` (GBIF only lists the authenticated account's downloads)
+- `status` (array, optional) - Only these states, e.g. `["SUCCEEDED"]`
+- `limit` (number, optional) - 1-100, default 20
+- `offset` (number, optional) - Skip this many, default 0
 
 ---
 

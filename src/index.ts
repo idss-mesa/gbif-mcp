@@ -61,6 +61,7 @@ import {
   OccurrenceDownloadTool,
   OccurrenceDownloadPredicateBuilderTool,
   OccurrenceDownloadStatusTool,
+  OccurrenceDownloadListTool,
   OccurrenceVerbatimTool,
   OccurrenceCountsByBasisOfRecordTool,
   OccurrenceCountsByYearTool,
@@ -206,6 +207,7 @@ class GBIFMCPServer {
       this.toolRegistry.register(new OccurrenceDownloadTool(occurrenceService));
       this.toolRegistry.register(new OccurrenceDownloadPredicateBuilderTool(occurrenceService));
       this.toolRegistry.register(new OccurrenceDownloadStatusTool(occurrenceService));
+      this.toolRegistry.register(new OccurrenceDownloadListTool(occurrenceService));
       this.toolRegistry.register(new OccurrenceVerbatimTool(occurrenceService));
       this.toolRegistry.register(new OccurrenceCountsByBasisOfRecordTool(occurrenceService));
       this.toolRegistry.register(new OccurrenceCountsByYearTool(occurrenceService));

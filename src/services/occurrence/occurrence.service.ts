@@ -5,6 +5,7 @@ import type {
   OccurrenceSearchParams,
   OccurrenceDownloadRequest,
   OccurrenceDownload,
+  OccurrenceDownloadStatus,
   DownloadPredicate,
   GBIFResponse,
   GBIFError,
@@ -266,6 +267,63 @@ export class OccurrenceService {
     } catch (error) {
       logger.error('Failed to get download status', { downloadKey, error });
       throw this.handleError(error, `Failed to get download status for ${downloadKey}`);
+    }
+  }
+
+  /**
+   * List a user's downloads
+   *
+   * Retrieves the downloads created by a GBIF user, newest first. Requires
+   * authentication as that same user: GBIF answers 401 for anyone else's list.
+   *
+   * @param username - GBIF username whose downloads to list
+   * @param params - Pagination and optional status filter
+   * @returns Paginated download records
+   *
+   * @example
+   * ```typescript
+   * const page = await occurrenceService.listUserDownloads('jsmith', {
+   *   limit: 20,
+   *   status: ['SUCCEEDED'],
+   * });
+   * page.results?.forEach(d => console.log(d.key, d.doi, d.totalRecords));
+   * ```
+   */
+  async listUserDownloads(
+    username: string,
+    params: { offset?: number; limit?: number; status?: OccurrenceDownloadStatus[] } = {}
+  ): Promise<GBIFResponse<OccurrenceDownload>> {
+    try {
+      logger.info('Listing user downloads', { username, params });
+
+      if (!username || username.trim().length === 0) {
+        throw new Error('Username is required');
+      }
+
+      const query: Record<string, any> = {
+        offset: params.offset ?? 0,
+        limit: params.limit ?? 20,
+      };
+      // GBIF accepts a comma-separated status list; axios would send status[]= for an array.
+      if (params.status && params.status.length > 0) {
+        query.status = params.status.join(',');
+      }
+
+      const response = await this.client.get<GBIFResponse<OccurrenceDownload>>(
+        `${this.basePath}/download/user/${encodeURIComponent(username.trim())}`,
+        query
+      );
+
+      logger.info('User downloads retrieved', {
+        username,
+        count: response.count,
+        returned: response.results?.length || 0,
+      });
+
+      return response;
+    } catch (error) {
+      logger.error('Failed to list user downloads', { username, error });
+      throw this.handleError(error, `Failed to list downloads for user ${username}`);
     }
   }
 

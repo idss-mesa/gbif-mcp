@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { BaseTool } from '../base-tool.js';
 import type { ToolAnnotations } from '@modelcontextprotocol/server';
 import { OccurrenceService } from '../../services/occurrence/occurrence.service.js';
+import { config } from '../../config/config.js';
 import type { OccurrenceDownloadRequest, DownloadPredicate } from '../../types/gbif.types.js';
 
 /**
@@ -20,7 +21,7 @@ export class OccurrenceDownloadTool extends BaseTool<any, string> {
   };
 
   protected readonly inputSchema = z.object({
-    creator: z.string().min(1).describe('GBIF username (creator of the download). This is your GBIF.org username. Example: "john.smith". Required for download attribution and access control.'),
+    creator: z.string().min(1).optional().describe('GBIF username (creator of the download). This is your GBIF.org username. Example: "john.smith". Defaults to the configured GBIF_USERNAME; must match the authenticated account.'),
     notificationAddresses: z
       .array(z.string().email())
       .optional()
@@ -44,8 +45,15 @@ export class OccurrenceDownloadTool extends BaseTool<any, string> {
   }
 
   protected async run(input: any): Promise<any> {
+    const creator = input.creator || config.gbif.username;
+    if (!creator) {
+      throw new Error(
+        'Authentication required: Please set GBIF_USERNAME and GBIF_PASSWORD environment variables with valid GBIF credentials, or pass creator.'
+      );
+    }
+
     try {
-      const downloadKey = await this.occurrenceService.requestDownload(input as OccurrenceDownloadRequest);
+      const downloadKey = await this.occurrenceService.requestDownload({ ...input, creator } as OccurrenceDownloadRequest);
 
       return this.formatResponse(
         {
@@ -57,7 +65,7 @@ export class OccurrenceDownloadTool extends BaseTool<any, string> {
           },
         },
         {
-          creator: input.creator,
+          creator,
           format: input.format,
           willNotify: input.sendNotification && input.notificationAddresses?.length,
         }

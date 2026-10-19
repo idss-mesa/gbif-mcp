@@ -1,7 +1,8 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { OccurrenceDownloadTool } from '../../../../src/tools/occurrence/occurrence-download.tool.js';
 import { OccurrenceService } from '../../../../src/services/occurrence/occurrence.service.js';
 import { GBIFClient } from '../../../../src/core/gbif-client.js';
+import { config } from '../../../../src/config/config.js';
 
 describe('OccurrenceDownloadTool', () => {
   let tool: OccurrenceDownloadTool;
@@ -70,5 +71,39 @@ describe('OccurrenceDownloadTool', () => {
     };
 
     await expect(tool.execute(input)).rejects.toThrow();
+  });
+
+  describe('creator default', () => {
+    const savedUsername = config.gbif.username;
+    const predicate = { type: 'equals' as const, key: 'TAXON_KEY', value: '1' };
+
+    afterEach(() => {
+      (config as any).gbif.username = savedUsername;
+    });
+
+    it('should default creator to the configured GBIF username', async () => {
+      (config as any).gbif.username = 'configured-user';
+      const spy = vi.spyOn(occurrenceService as any, 'requestDownload').mockResolvedValue('download-789');
+
+      const result: any = await tool.execute({ predicate });
+      expect(spy).toHaveBeenCalledWith(expect.objectContaining({ creator: 'configured-user' }));
+      expect(result.metadata.creator).toBe('configured-user');
+    });
+
+    it('should prefer an explicit creator', async () => {
+      (config as any).gbif.username = 'configured-user';
+      const spy = vi.spyOn(occurrenceService as any, 'requestDownload').mockResolvedValue('download-789');
+
+      await tool.execute({ creator: 'explicit-user', predicate });
+      expect(spy).toHaveBeenCalledWith(expect.objectContaining({ creator: 'explicit-user' }));
+    });
+
+    it('should fail without a creator or configured username', async () => {
+      (config as any).gbif.username = undefined;
+      const spy = vi.spyOn(occurrenceService as any, 'requestDownload');
+
+      await expect(tool.execute({ predicate })).rejects.toThrow('Authentication required');
+      expect(spy).not.toHaveBeenCalled();
+    });
   });
 });
