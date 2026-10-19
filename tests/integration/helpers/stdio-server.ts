@@ -46,8 +46,8 @@ export class RawStdioSession {
   public stderr = '';
   public exitCode: number | null = null;
 
-  constructor() {
-    this.proc = spawn(TSX_BIN, [SERVER_ENTRY], { env: SERVER_ENV, stdio: ['pipe', 'pipe', 'pipe'] });
+  constructor(env: Record<string, string> = {}) {
+    this.proc = spawn(TSX_BIN, [SERVER_ENTRY], { env: { ...SERVER_ENV, ...env }, stdio: ['pipe', 'pipe', 'pipe'] });
     this.proc.stdout.on('data', (chunk: Buffer) => {
       this.buffer += chunk.toString('utf8');
       let idx: number;

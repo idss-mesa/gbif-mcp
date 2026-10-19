@@ -16,3 +16,5 @@ export {
 } from './request-handler.js';
 
 export type { RequestContext } from './request-handler.js';
+
+export { DrainingStdioTransport, DEFAULT_DRAIN_TIMEOUT_MS } from './draining-stdio-transport.js';

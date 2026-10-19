@@ -25,6 +25,7 @@ import { GBIFClient } from './core/gbif-client.js';
 import { ToolRegistry } from './core/tool-registry.js';
 import { RequestHandler } from './protocol/request-handler.js';
 import { MCPError, MCPErrorCode, MCPErrorFormatter } from './protocol/mcp-errors.js';
+import { DrainingStdioTransport } from './protocol/draining-stdio-transport.js';
 
 // Import services
 import { SpeciesService } from './services/species/species.service.js';
@@ -305,7 +306,7 @@ class GBIFMCPServer {
           'maps, literature, vocabularies and data validation.',
           'Results are paginated with `offset`/`limit` and an `endOfRecords` flag;',
           'large responses are truncated to the configured size limit with guidance on how to page.',
-          'Only download requests need GBIF credentials.',
+          'Only download requests and listing your downloads need GBIF credentials.',
         ].join(' '),
         // The tool catalogue is static for the lifetime of the process.
         cacheHints: {
@@ -495,8 +496,12 @@ class GBIFMCPServer {
       // Serve over stdio. The entry owns protocol-era negotiation: a 2026-07-28
       // client (stateless `_meta` envelope / `server/discover`) and a 2025-era
       // client (`initialize` handshake) are both served from the same factory.
+      // The transport answers requests still in flight when stdin closes before the
+      // connection ends (the SDK default aborts them).
+      const transport = new DrainingStdioTransport();
       this.stdioHandle = serveStdio(() => this.createMcpServer(), {
         legacy: config.server.legacyClients,
+        transport,
         onerror: (error) => {
           logger.error('MCP stdio transport error', {
             error: error.message,
@@ -526,9 +531,10 @@ class GBIFMCPServer {
         setInterval(() => this.logStatistics(), 5 * 60 * 1000).unref();
       }
 
-      // MCP hosts signal shutdown by closing the server's stdin. Exit promptly (and log
-      // final statistics) instead of lingering as an orphaned process.
-      process.stdin.once('end', () => {
+      // MCP hosts signal shutdown by closing the server's stdin. Once requests already
+      // received are answered, exit (and log final statistics) instead of lingering as
+      // an orphaned process.
+      void transport.drained.then(() => {
         logger.info('stdin closed by client, shutting down');
         void this.shutdown();
       });
@@ -597,7 +603,9 @@ class GBIFMCPServer {
     } catch (error) {
       logger.error('Error during shutdown', { error });
     } finally {
-      // Give logger time to flush
+      // Let pending stdout writes (the last responses) reach the pipe, which is
+      // asynchronous on macOS, and give the logger time to flush.
+      await new Promise<void>(resolve => process.stdout.write('', () => resolve()));
       await new Promise(resolve => setTimeout(resolve, 100));
       process.exit(0);
     }

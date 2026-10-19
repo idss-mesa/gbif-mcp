@@ -8,15 +8,18 @@
  * - the official v2 client negotiating both eras;
  * - adversarial framing: malformed JSON, missing envelope, bogus versions, unknown tools.
  *
- * No GBIF network access is needed: every tool call here is rejected before any HTTP request.
+ * No GBIF network access is needed: tool calls here are rejected before any HTTP request, or
+ * (for the stdin-EOF drain) answered by a local stand-in for the GBIF API.
  */
 import { describe, it, expect, afterEach } from 'vitest';
+import { createServer, type Server } from 'node:http';
+import type { AddressInfo } from 'node:net';
 import { RawStdioSession, MODERN_META, connectClient, parseToolText } from '../helpers/stdio-server.js';
 
 const EXPECTED_TOOL_COUNT = 59;
 const sessions: RawStdioSession[] = [];
-const open = () => {
-  const s = new RawStdioSession();
+const open = (env?: Record<string, string>) => {
+  const s = new RawStdioSession(env);
   sessions.push(s);
   return s;
 };
@@ -161,6 +164,34 @@ describe('process lifecycle', () => {
     const t0 = Date.now();
     const code = await s.waitForExit(5000);
     expect(code, `server still running ${Date.now() - t0}ms after stdin EOF`).toBe(0);
+  });
+
+  it('answers a tool call still in flight when stdin closes, then exits', async () => {
+    // Local stand-in for the GBIF API that answers slowly, so the call is still running at EOF.
+    const slowGbif: Server = createServer((_req, res) => {
+      setTimeout(() => {
+        res.setHeader('content-type', 'application/json');
+        res.end(JSON.stringify({ usageKey: 2435099, scientificName: 'Puma concolor', matchType: 'EXACT', confidence: 99 }));
+      }, 1500);
+    });
+    await new Promise<void>(resolve => slowGbif.listen(0, '127.0.0.1', resolve));
+    try {
+      const { port } = slowGbif.address() as AddressInfo;
+      const s = open({ GBIF_BASE_URL: `http://127.0.0.1:${port}`, CACHE_ENABLED: 'false' });
+      s.send({
+        jsonrpc: '2.0', id: 1, method: 'tools/call',
+        params: { _meta: MODERN_META, name: 'gbif_species_match', arguments: { name: 'Puma concolor' } },
+      });
+      s.proc.stdin.end();
+
+      const res = await s.waitFor(m => m.id === 1, 10000);
+      expect(res.error).toBeUndefined();
+      expect(res.result.isError).toBeFalsy();
+      expect(parseToolText(res.result).json.data.usageKey).toBe(2435099);
+      expect(await s.waitForExit(5000)).toBe(0);
+    } finally {
+      slowGbif.close();
+    }
   });
 
   it('exits on its own after a legacy session ends', async () => {

@@ -43,10 +43,13 @@ Official client (already a devDependency): run from the repo root so modules res
 
 ## Gotchas
 
-- The server exits on its own (code 0, ~100 ms) when the client closes stdin; a driver that
-  ends `stdin` after its last request finishes naturally. If a run ever leaves processes
-  behind, `pkill -f gbif-mcp/build/index.js` and treat it as a regression of the
-  stdin-EOF shutdown (see `process lifecycle` tests in `stdio-protocol.test.ts`).
+- When the client closes stdin, the server first answers the requests it already received
+  (`DrainingStdioTransport`, capped at 10 s), then exits with code 0 (~100 ms when nothing is
+  in flight). So a `printf … | node build/index.js` driver gets every response. If a response
+  is missing, or a run leaves processes behind, treat it as a regression of the stdin-EOF
+  drain/shutdown (see `process lifecycle` tests in `stdio-protocol.test.ts`); clean up with
+  `pkill -f gbif-mcp/build/index.js` — but note Claude Code's own gbif MCP connection runs
+  the same command, so check the parent process first.
 - macOS has no `timeout` command; do not wrap drivers in it.
 - Logs go to stderr as JSON; `LOG_LEVEL=error` keeps them quiet.
 - Live GBIF calls take 0.2-1 s each; the server's rate limit is 100 requests/min by default.
